@@ -9,7 +9,8 @@
       "16": "icon.png",
       "24": "icon.png",
       "32": "icon.png"
-    }
+    },
+    "default_popup": "index.html"
   },
   "icons": {
     "128": "icon.png",
@@ -17,15 +18,8 @@
     "256": "icon.png",
     "48": "icon.png"
   },
-  "permissions": ["activeTab", "notifications"],
+
   "background": {
     "service_worker": "src/background.ts"
-  },
-  "options_page": "index.html",
-  "content_scripts": [
-    {
-      "js": ["src/content.ts"],
-      "matches": ["<all_urls>"]
-    }
-  ]
+  }
 }

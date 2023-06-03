@@ -1,35 +1,93 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  HStack,
+  Heading,
+} from "@chakra-ui/react";
+import { cities } from "./utils/_data";
+import { ICity } from "./utils/interface";
+import Times from "./components/Times";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-function App() {
-  const [count, setCount] = useState(0)
+// import required modules
+import { Pagination, Navigation } from "swiper";
 
+const App = () => {
+  const [time, setTime] = useState<string>("");
+  const [timeZoon, setTimeZooon] = useState<string>("America/New_York");
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(
+        new Date().toLocaleString("en-US", {
+          timeZone: timeZoon,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        })
+      );
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [timeZoon]);
+  console.log(timeZoon);
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Container
+      fontFamily="Kalam"
+      h="auto"
+      maxW="500px"
+      w="500px"
+      mx="auto"
+      p={4}
+      rounded="2xl"
+      border="2px"
+      boxShadow="2xl"
+    >
+      <HStack spacing={2} align="center" justify="space-between">
+        {cities?.map((city: ICity, index: number) => (
+          <Button
+            onClick={() => setTimeZooon(city?.timezone)}
+            key={index}
+            variant="outline"
+            colorScheme="blue"
+            fontWeight="semibold"
+            fontSize="xl"
+          >
+            {city.name}
+          </Button>
+        ))}
+      </HStack>
+      <Flex
+        p={7}
+        my={2}
+        w="full"
+        align="center"
+        style={{
+          backgroundImage: `url('/bgimage.png')`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <Swiper modules={[Pagination, Navigation]}>
+          <SwiperSlide>
+            <Times currentTime={time} key="1" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Times currentTime={time} key="1" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Times currentTime={time} key="1" />
+          </SwiperSlide>
+        </Swiper>
+      </Flex>
+    </Container>
+  );
+};
 
-export default App
+export default App;
