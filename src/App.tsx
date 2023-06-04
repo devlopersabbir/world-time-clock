@@ -6,14 +6,12 @@ import {
   Flex,
   HStack,
   Heading,
+  IconButton,
 } from "@chakra-ui/react";
 import { cities } from "./utils/_data";
 import { ICity } from "./utils/interface";
 import Times from "./components/Times";
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// import required modules
-import { Pagination, Navigation } from "swiper";
+import { BsFillCaretLeftFill, BsFillCaretRightFill } from "react-icons/bs";
 
 const App = () => {
   const [time, setTime] = useState<string>("");
@@ -35,7 +33,10 @@ const App = () => {
       clearInterval(timer);
     };
   }, [timeZoon]);
-  console.log(timeZoon);
+
+  const [slideIndex, setSlideIndex] = useState<number>(1);
+  const nextSlide = () => {};
+  const prevSlide = () => {};
   return (
     <Container
       fontFamily="Kalam"
@@ -73,18 +74,68 @@ const App = () => {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
         }}
+        overflow="hidden"
+        gap="32"
+        justify="center"
+        position="relative"
       >
-        <Swiper modules={[Pagination, Navigation]}>
-          <SwiperSlide>
-            <Times currentTime={time} key="1" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Times currentTime={time} key="1" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Times currentTime={time} key="1" />
-          </SwiperSlide>
-        </Swiper>
+        {/* left button */}
+        <IconButton
+          position="absolute"
+          left={16}
+          onClick={prevSlide}
+          aria-label="left"
+          colorScheme="purple"
+          cursor="pointer"
+          as={BsFillCaretLeftFill}
+          zIndex={999}
+        />
+
+        {cities.map((_: ICity, i: number) => (
+          // slider content start
+          <Box
+            visibility="unset"
+            w="full"
+            animation="ease-in-out"
+            transitionDelay="0.3s"
+            zIndex={9}
+            borderRadius="2xl"
+            shadow="0 0 10px rgba(0, 0, 0, 0.2)"
+            style={{
+              backdropFilter: "blur(10px)",
+              background:
+                "linear-gradient(rgb(241 241 241 / 23%), rgb(255 255 255 / 13%))",
+            }}
+            mx="auto"
+            my={5}
+            px={5}
+            py={8}
+          >
+            <Heading
+              animation="ease-in-out"
+              transitionDelay="0.3s"
+              key={i}
+              _selection={{ userSelect: "none" }}
+              fontWeight="bold"
+              color="orange.400"
+              fontSize="5xl"
+            >
+              {time}
+            </Heading>
+          </Box>
+          // slider content end
+        ))}
+        {/* right button */}
+        <IconButton
+          zIndex={9999}
+          position="absolute"
+          right={16}
+          onClick={nextSlide}
+          cursor="pointer"
+          colorScheme="purple"
+          aria-label="right"
+          as={BsFillCaretRightFill}
+        />
       </Flex>
     </Container>
   );
