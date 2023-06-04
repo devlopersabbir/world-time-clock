@@ -6,14 +6,30 @@ interface ITimes {
 
 const Times = ({ currentTime }: ITimes) => {
   return (
-    <Heading
-      _selection={{ userSelect: "none" }}
-      fontWeight="bold"
-      color="orange.400"
-      fontSize="5xl"
+    <Box
+      zIndex={9}
+      borderRadius="2xl"
+      // bg="gray.300"
+      shadow="0 0 10px rgba(0, 0, 0, 0.2)"
+      style={{
+        backdropFilter: "blur(10px)",
+        background:
+          "linear-gradient(rgb(241 241 241 / 23%), rgb(255 255 255 / 13%))",
+      }}
+      mx="auto"
+      my={5}
+      px={5}
+      py={8}
     >
-      {currentTime}
-    </Heading>
+      <Heading
+        _selection={{ userSelect: "none" }}
+        fontWeight="bold"
+        color="orange.400"
+        fontSize="5xl"
+      >
+        {currentTime}
+      </Heading>
+    </Box>
   );
 };
 
